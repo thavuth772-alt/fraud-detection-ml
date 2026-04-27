@@ -51,7 +51,30 @@ data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
                     ])
 
 # force correct order
+
 data = data[cols]
+data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
+    columns=[
+        "amount",
+        "transaction_hour",
+        "foreign_transaction",
+        "location_mismatch",
+        "device_trust_score",
+        "velocity_last_24h",
+        "cardholder_age"
+    ])
+
+data = data[cols]
+
+pred = model.predict(data)[0]
+prob = model.predict_proba(data)[0][1]
+
+st.write(f"Fraud Probability: {prob:.2f}")
+
+if pred == 1:
+    st.error("🚨 Fraudulent Transaction Detected!")
+else:
+    st.success("✅ Transaction is Safe")
 pred = model.predict(data)[0]
 prob = model.predict_proba(data)[0][1]
 
