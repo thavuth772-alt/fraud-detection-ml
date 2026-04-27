@@ -6,7 +6,9 @@ st.set_page_config(page_title="Fraud Detector", layout="centered")
 
 st.title("💳 Fraud Detection System")
 
+# Load model + columns
 model = joblib.load("xgb_model.pkl")
+cols = joblib.load("columns.pkl")
 
 st.subheader("Enter Transaction Details")
 
@@ -25,8 +27,10 @@ velocity = st.slider("🔄 Transactions in last 24 hours", 0, 50)
 
 age = st.number_input("👤 Cardholder Age", min_value=18)
 
+# BUTTON
 if st.button("🔍 Check Transaction"):
-    
+
+    # Create input data
     data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
         columns=[
             "amount",
@@ -37,47 +41,16 @@ if st.button("🔍 Check Transaction"):
             "velocity_last_24h",
             "cardholder_age"
         ])
-    cols = joblib.load("columns.pkl")
 
-data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
-                    columns=[
-                        "amount",
-                        "transaction_hour",
-                        "foreign_transaction",
-                        "location_mismatch",
-                        "device_trust_score",
-                        "velocity_last_24h",
-                        "cardholder_age"
-                    ])
+    # Ensure correct column order
+    data = data[cols]
 
-# force correct order
+    # Prediction
+    pred = model.predict(data)[0]
+    prob = model.predict_proba(data)[0][1]
 
-data = data[cols]
-data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
-    columns=[
-        "amount",
-        "transaction_hour",
-        "foreign_transaction",
-        "location_mismatch",
-        "device_trust_score",
-        "velocity_last_24h",
-        "cardholder_age"
-    ])
-
-data = data[cols]
-
-pred = model.predict(data)[0]
-prob = model.predict_proba(data)[0][1]
-
-st.write(f"Fraud Probability: {prob:.2f}")
-
-if pred == 1:
-    st.error("🚨 Fraudulent Transaction Detected!")
-else:
-    st.success("✅ Transaction is Safe")
-pred = model.predict(data)[0]
-prob = model.predict_proba(data)[0][1]
-st.write(f"Fraud Probability: {prob:.2f}")
+    # Output
+    st.write(f"Fraud Probability: {prob:.2f}")
 
     if pred == 1:
         st.error("🚨 Fraudulent Transaction Detected!")
