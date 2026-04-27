@@ -77,8 +77,7 @@ else:
     st.success("✅ Transaction is Safe")
 pred = model.predict(data)[0]
 prob = model.predict_proba(data)[0][1]
-
-    st.write(f"Fraud Probability: {prob:.2f}")
+st.write(f"Fraud Probability: {prob:.2f}")
 
     if pred == 1:
         st.error("🚨 Fraudulent Transaction Detected!")
