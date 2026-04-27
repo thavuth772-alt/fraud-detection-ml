@@ -31,6 +31,8 @@ age = st.number_input("👤 Cardholder Age", min_value=18)
 if st.button("🔍 Check Transaction"):
 
     # Create input data
+   if st.button("🔍 Check Transaction"):
+
     data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
         columns=[
             "amount",
@@ -42,14 +44,9 @@ if st.button("🔍 Check Transaction"):
             "cardholder_age"
         ])
 
-    # Ensure correct column order
-    data = data[cols]
-
-    # Prediction
     pred = model.predict(data)[0]
     prob = model.predict_proba(data)[0][1]
 
-    # Output
     st.write(f"Fraud Probability: {prob:.2f}")
 
     if pred == 1:
