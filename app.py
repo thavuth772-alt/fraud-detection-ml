@@ -30,9 +30,6 @@ age = st.number_input("👤 Cardholder Age", min_value=18)
 # BUTTON
 if st.button("Check Transaction"):
 
-    # Create input data
-   if st.button("Check Transaction"):
-
     data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
         columns=[
             "amount",
