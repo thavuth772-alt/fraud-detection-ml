@@ -52,9 +52,8 @@ data = pd.DataFrame([[amount, hour, foreign, mismatch, trust, velocity, age]],
 
 # force correct order
 data = data[cols]
-    
-    pred = model.predict(data)[0]
-    prob = model.predict_proba(data)[0][1]
+pred = model.predict(data)[0]
+prob = model.predict_proba(data)[0][1]
 
     st.write(f"Fraud Probability: {prob:.2f}")
 
