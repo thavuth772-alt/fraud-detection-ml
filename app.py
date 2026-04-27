@@ -4,7 +4,7 @@ import joblib
 
 st.title("💳 Fraud Detection App")
 
-model = joblib.load("model.pkl")
+model = joblib.load("xgb_model.pkl")
 
 uploaded_file = st.file_uploader("Upload CSV")
 
